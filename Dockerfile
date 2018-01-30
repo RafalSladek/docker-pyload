@@ -1,7 +1,6 @@
-FROM ubuntu:xenial
-MAINTAINER Patrick Oberdorf "patrick@oberdorf.net"
+FROM ubuntu:latest
 
-RUN apt-get update && apt-get install -y python \
+RUN apt-get update && apt-get upgrade -y -qq && apt-get install -y python \
 	locales \
 	python-setuptools \
 	python-requests \
@@ -16,6 +15,7 @@ RUN apt-get update && apt-get install -y python \
 	python-pip \
 	tesseract-ocr \
 	python-beaker \
+	wget \
 	unrar \
 	gocr \
 	python-django \
@@ -23,14 +23,17 @@ RUN apt-get update && apt-get install -y python \
 	rhino \
 	gosu \
 	&& apt-get clean \
-	&& rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
-	&& pip install Send2Trash
+	&& rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* 
+	
+RUN wget -q https://bootstrap.pypa.io/get-pip.py && python get-pip.py && pip install Send2Trash
 
 # Set the locale
 RUN locale-gen en_US.UTF-8
 ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
+
+ENV PYCURL_SSL_LIBRARY openssl
 
 RUN git clone https://github.com/pyload/pyload.git /opt/pyload \
         && cd /opt/pyload \
@@ -42,7 +45,6 @@ ADD run.sh /run.sh
 RUN chmod +x /run.sh
 
 EXPOSE 8000
-VOLUME /opt/pyload/pyload-config
-VOLUME /opt/pyload/Downloads
+VOLUME [ '/opt/pyload/pyload-config', '/opt/pyload/Downloads' ]
 
 CMD ["/run.sh"]
