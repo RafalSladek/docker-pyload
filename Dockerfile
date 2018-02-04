@@ -2,6 +2,13 @@ FROM ubuntu:latest
 
 RUN apt-get update && apt-get upgrade -y -qq && apt-get install -y python \
 	locales \
+	python-dev \ 
+	openssl \
+	apt-utils \
+	build-essential \
+	fakeroot \
+	dpkg-dev \
+	libcurl4-openssl-dev \
 	python-setuptools \
 	python-requests \
 	python-pycurl \
@@ -15,17 +22,20 @@ RUN apt-get update && apt-get upgrade -y -qq && apt-get install -y python \
 	python-pip \
 	tesseract-ocr \
 	python-beaker \
+	python-simplejson \
+	python-openssl \
 	wget \
 	unrar \
 	gocr \
 	python-django \
 	git \
+	wget \
 	rhino \
 	gosu \
 	&& apt-get clean \
 	&& rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* 
 	
-RUN wget -q https://bootstrap.pypa.io/get-pip.py && python get-pip.py && pip install Send2Trash
+RUN wget -q https://bootstrap.pypa.io/get-pip.py && python get-pip.py && pip install Send2Trash && pip install pycrypto
 
 # Set the locale
 RUN locale-gen en_US.UTF-8
