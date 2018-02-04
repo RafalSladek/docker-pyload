@@ -1,6 +1,9 @@
 FROM ubuntu:latest
 
-RUN apt-get update && apt-get upgrade -y -qq && apt-get install -y python \
+RUN apt-get update \ 
+	&& apt-get upgrade -y -qq \
+	&& apt-get install -y \
+	python \
 	locales \
 	python-dev \ 
 	openssl \
@@ -35,7 +38,10 @@ RUN apt-get update && apt-get upgrade -y -qq && apt-get install -y python \
 	&& apt-get clean \
 	&& rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* 
 	
-RUN wget -q https://bootstrap.pypa.io/get-pip.py && python get-pip.py && pip install Send2Trash && pip install pycrypto
+RUN wget -q https://bootstrap.pypa.io/get-pip.py \
+	&& python get-pip.py \
+	&& pip install Send2Trash \
+	&& pip install pycrypto
 
 # Set the locale
 RUN locale-gen en_US.UTF-8
@@ -55,6 +61,7 @@ ADD run.sh /run.sh
 RUN chmod +x /run.sh
 
 EXPOSE 8000
-VOLUME [ '/opt/pyload/pyload-config', '/opt/pyload/Downloads' ]
+VOLUME "/opt/pyload/pyload-config"
+VOLUME "/opt/pyload/Downloads"
 
 CMD ["/run.sh"]

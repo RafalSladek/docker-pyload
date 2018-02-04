@@ -1,6 +1,6 @@
 PyLoad
 =========
-[![Build Status](https://travis-ci.org/obi12341/docker-pyload.svg?branch=master)](https://travis-ci.org/obi12341/docker-pyload)
+[![Build Status](https://travis-ci.org/RafalSladek/docker-pyload.svg?branch=master)](https://travis-ci.org/RafalSladek/docker-pyload)
 
 **NOTICE**: If pyload is not able to update plugins, try to use `latest` tag
 
@@ -19,14 +19,14 @@ Install
 Install is easy as all docker images
 
 ```sh
-docker pull writl/pyload:latest
+docker pull rafalsladek/docker-pyload:latest
 ```
 
 Running
 ----
 
 ```sh
-docker run -d -P writl/pyload:latest
+docker run -d -P rafalsladek/docker-pyload:latest
 ```
 
 Configuration
@@ -34,17 +34,17 @@ Configuration
 You can link your Downloads to your host very easy like that:
 
 ```sh
-docker run -d -v <host directoy>:/opt/pyload/Downloads -P writl/pyload:latest
+docker run -d -v <host directoy>:/opt/pyload/Downloads -P rafalsladek/docker-pyload:latest
 ```
 Notice to replace ```<host directory>``` with your directory path on the host. So if you want to store your Downloads in ```/tmp/Downloads``` then your command would look like this:
 
 ```sh
-docker run -d -v /tmp/Downloads:/opt/pyload/Downloads -P writl/pyload:latest
+docker run -d -v /tmp/Downloads:/opt/pyload/Downloads -P rafalsladek/docker-pyload:latest
 ```
 If you want to have your configuration persistent you have to link the configuration directory outside of the container. This can happen like this:
 
 ```sh
-docker run -d -v <host directoy>:/opt/pyload/pyload-config -P writl/pyload:latest
+docker run -d -v <host directoy>:/opt/pyload/pyload-config -P rafalsladek/docker-pyload:latest
 ```
 
 By default, pyload will be run as root, and will download files with uid 0 and gid 0. If you want to change this behavior, you can specify the UID and GID that will be used for the downloaded files by using ENV VARS
@@ -53,12 +53,13 @@ By default, pyload will be run as root, and will download files with uid 0 and g
 docker \
     run \
     -d \
-    -v <host download directory>:/opt/pyload/Downloads \
-    -v <host config directoy>:/opt/pyload/pyload-config \
-    -e UID=<uid> \
-    -e GID=<gid> \
-    -P \
-    writl/pyload:latest
+    -v /share/CACHEDEV1_DATA/Download/pyload-download-latest:/opt/pyload/Downloads \
+    -v /share/CACHEDEV1_DATA/Download/pyload-config-latest:/opt/pyload/pyload-config \
+    -e UID=502 \
+    -e GID=100 \
+    -p 9000:8000 \
+    --name pyload \
+    rafalsladek/docker-pyload:latest
 ```
 
 Finally
